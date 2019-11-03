@@ -2,32 +2,59 @@
 
 {% block content %}
 
+
+
 </br>
-<button type="button" class="btn btn-primary btn-lg btn-block">Add a new person</button>
+<span style="font-size: 20px; border-bottom-style: solid; border-color: orange;">Beers you get from</span>
 </br>
-<form action="{% url 'home' %}" method="POST">
-    <div class="form-group">
-        <label for="exampleInputEmail1">Name</label>
-        <input name="name" type="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter firstname and lastname">
-    </div>
-    <button type="submit" class="btn btn-primary">Add</button>
-</form>
 </br>
 <ul class="list-group">
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        Cras justo odio
-        <button type="button" class="btn btn-success">More</button>
-        <button type="button" class="btn btn-danger">Less</button>
-        <span class="badge badge-primary badge-pill">14</span>
-    </li>
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        Dapibus ac facilisis in
-        <span class="badge badge-primary badge-pill">2</span>
-    </li>
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        Morbi leo risus
-        <span class="badge badge-primary badge-pill">1</span>
-    </li>
-</ul>
+    {% for o in api.persons.get %}
 
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ o.name }}
+        <form action="{% url 'home' %}" method="POST">
+                {% csrf_token %}
+            <button type="submit" type="button" class="btn" name="more" value="{{ o.id }}"><i class="fas fa-chevron-up"></i></button>
+            <span class="badge">{{ o.beers}}</span>
+            <i class="fas fa-beer" style="color: orange;"></i>
+            <button type="submit" type="button" class="btn" name="less" value="{{ o.id }}"><i class="fas fa-chevron-down"></i></button>
+            <button type="submit" type="button" class="btn" name="delete" value="{{ o.id }}"><i class="far fa-trash-alt"></i></button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+</br>
+<form action="{% url 'create' %}" method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-outline-primary btn-lg btn-block" name="add" value="get">Add new</button>
+</form>
+</br>
+</br>
+</br>
+<span style="font-size: 20px; border-bottom-style: solid; border-color: orange;">Beers you give to</span>
+</br>
+</br>
+<ul class="list-group">
+    {% for o in api.persons.give %}
+
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ o.name }}
+        <form action="{% url 'home' %}" method="POST">
+                {% csrf_token %}
+            <button type="submit" type="button" class="btn" name="more" value="{{ o.id }}"><i class="fas fa-chevron-up"></i></button>
+            <span class="badge">{{ o.beers}}</span>
+            <i class="fas fa-beer" style="color: orange;"></i>
+            <button type="submit" type="button" class="btn" name="less" value="{{ o.id }}"><i class="fas fa-chevron-down"></i></button>
+            <button type="submit" type="button" class="btn" name="delete" value="{{ o.id }}"><i class="far fa-trash-alt"></i></button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+</br>
+<form action="{% url 'create' %}" method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-outline-primary btn-lg btn-block" name="add" value="give" >Add new</button>
+</form>
+</br>   
 {% endblock %}
